@@ -1,0 +1,26 @@
+.row {
+	position: relative;
+}
+
+.first {
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translateX(-400px);
+	transition: 0.5s;
+	z-index: 2;
+}
+.active {
+	transform: translateX(40px);
+}
+
+.card {
+    min-width: 253px;
+    max-width: 253px;
+    margin: 10px;
+}
+article {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}

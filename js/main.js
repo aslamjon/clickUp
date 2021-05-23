@@ -1,139 +1,202 @@
-var task_list = [
-    {
-        id: 1,
-        description: 'sgd.uz ni desktop ko\'rinishi',
-        staff: 'Aslamjon',
-        start_date: '2021-01-21',
-        end_date: '2021-01-25',
-        status: 'pending',
-        isRejected: false
-    },
+var data = [
+    { id: 1, staff: 'Aslamjon', startDate: '2021-01-04', endDate: '2021-01-24', des: 'zapchas.uz ni to\'liq yaratish', status: 'doing',rejected: false},
+    { id: 2, staff: 'Doston', startDate: '2021-01-04', endDate: '2021-01-24', des: 'sgd.uz ni desktopi', status: 'pending',rejected: false},
+    { id: 3, staff: 'Bekzod', startDate: '2021-01-04', endDate: '2021-01-24', des: 'CodeBox ni yaratish', status: 'done',rejected: false},
+    { id: 4, staff: 'Stiv', startDate: '2021-01-04', endDate: '2021-01-24', des: 'apple ni yaratish', status: 'rejected',rejected: false},
 ];
 
-var defStatus = null;
 
-getTaskList();
+function writeData() {
+    document.forms['pending'].innerHTML = '';
+    document.forms['doing'].innerHTML = '';
+    document.forms['done'].innerHTML = '';
+    document.forms['rejected'].innerHTML = '';
+    for (let i = 0; data.length > i; i++) {
+        if (data[i].status == 'pending') {
+            if (data[i].rejected === true) {
+                let rejectedTrue = 'rejected';
+                document.forms['pending'].innerHTML +=
+                '<h4>' + data[i].staff + '</h4>' +
+                '<p>' + data[i].des + '</p>' +
+                '<p>Start date: ' + data[i].startDate + '</p>' +
+                '<p>End date: ' + data[i].endDate + '</p>'+
+                '<p class="text-danger">'+ rejectedTrue +'</p>'+
+                `<select name="select" id="pending" class="form-control mt-1 mb-1">`+ 
+                `<option value="${data[i].status}" >`+ 'Status' +`</option>`+
+                `<option value="doing">`+ 'doing' +`</option>
+                <option value="done">`+ 'done' +`</option> </select> ` +
+                '<button type="button" class="btn btn-warning mt-1 text-white" onclick="edit('+data[i].id+')">edit</button>' +
+                `<button type="button" class="btn btn-danger ml-3 mt-1" onclick="deleteData(${data[i].id})">delete</button>` +
+                '<br> <hr class="bg-dark"> </br>'
+            }
+            else {
+                let rejectedTrue = '';
+                document.forms['pending'].innerHTML +=
+                '<h4>' + data[i].staff + '</h4>' +
+                '<p>' + data[i].des + '</p>' +
+                '<p>Start date: ' + data[i].startDate + '</p>' +
+                '<p>End date: ' + data[i].endDate + '</p>'+
+                '<p class="text-danger">'+ rejectedTrue +'</p>'+
+                `<select name="select" id="pending" class="form-control mt-1 mb-1">`+ 
+                `<option value="${data[i].status}" >`+ 'Status' +`</option>`+
+                `<option value="doing">`+ 'doing' +`</option>
+                <option value="done">`+ 'done' +`</option> </select> ` +
+                '<button type="button" class="btn btn-warning mt-1 text-white" onclick="edit('+data[i].id+')">edit</button>' +
+                `<button type="button" class="btn btn-danger ml-3 mt-1" onclick="deleteData(${data[i].id})">delete</button>` +
+                '<br> <hr class="bg-dark"> </br>'
+            }
+            
+        };
 
-function getTaskList() {
-    document.getElementById('pendingList').innerHTML = '';
-    document.getElementById('doingList').innerHTML = '';
-    document.getElementById('successList').innerHTML = '';
-    document.getElementById('rejectedList').innerHTML = '';
-    for (let i = 0; i < task_list.length; i++) {
-        if (task_list[i].status === 'pending') {
-            document.getElementById('pendingList').innerHTML +=
-                '<h4>' + task_list[i].staff + (task_list[i].isRejected ? '<span class="badge badge-secondary">Rejected</span>' : '') + '</h4>' +
-                '<div>' + task_list[i].description + '</div>' +
-                '<div class="mt-2">' + 'Start date: ' + task_list[i].start_date + '</div>' +
-                '<div>' + 'End date: ' + task_list[i].end_date + '</div>' +
-                '<select onchange="getStatus(event)" class="form-control mt-2">' +
-                '<option selected disabled>Select status</option>' +
-                '<option value="doing">doing</option>' +
-                '<option value="done">done</option>' +
-                '</select>' +
-                '<button onclick="editTask(' + task_list[i].id + ')" type="button" class="btn btn-warning text-white mt-3 px-3">Send</button>' +
-                '<button onclick="deleteTask(' + task_list[i].id + ')" type="button" class="btn btn-danger text-white mt-3 ml-3 px-3">Delete</button>' +
-                '<hr>'
-        } else if (task_list[i].status === 'doing') {
-            document.getElementById('doingList').innerHTML +=
-                '<h4>' + task_list[i].staff + (task_list[i].isRejected ? '<span class="badge badge-secondary">Rejected</span>' : '') + '</h4>' +
-                '<div>' + task_list[i].description + '</div>' +
-                '<div class="mt-2">' + 'Start date: ' + task_list[i].start_date + '</div>' +
-                '<div>' + 'End date: ' + task_list[i].end_date + '</div>' +
-                '<select onchange="getStatus(event)" class="form-control mt-2">' +
-                '<option selected disabled>Select status</option>' +
-                '<option value="done">done</option>' +
-                '<option value="pending">pending</option>' +
-                '</select>' +
-                '<button onclick="editTask(' + task_list[i].id + ')" type="button" class="btn btn-warning text-white mt-3 px-3">Send</button>' +
-                '<button onclick="deleteTask(' + task_list[i].id + ')" type="button" class="btn btn-danger text-white mt-3 ml-3 px-3">Delete</button>' +
-                '<hr>'
-        } else if (task_list[i].status === 'done') {
-            document.getElementById('successList').innerHTML +=
-                '<h4>' + task_list[i].staff + (task_list[i].isRejected ? '<span class="badge badge-secondary">Rejected</span>' : '') + '</h4>' +
-                '<div>' + task_list[i].description + '</div>' +
-                '<div class="mt-2">' + 'Start date: ' + task_list[i].start_date + '</div>' +
-                '<div>' + 'End date: ' + task_list[i].end_date + '</div>' +
-                '<button onclick="rejectedTask(' + task_list[i].id + ')" type="button" class="btn btn-secondary text-white mt-3 px-3">Rejected</button>' +
-                '<hr>'
-        } else {
-            document.getElementById('rejectedList').innerHTML +=
-                '<h4>' + task_list[i].staff + '</h4>' +
-                '<div>' + task_list[i].description + '</div>' +
-                '<div class="mt-2">' + 'Start date: ' + task_list[i].start_date + '</div>' +
-                '<div>' + 'End date: ' + task_list[i].end_date + '</div>' +
-                '<select onchange="getStatus(event)" class="form-control mt-2">' +
-                '<option selected disabled>Select status</option>' +
-                '<option value="done">done</option>' +
-                '<option value="doing">doing</option>' +
-                '<option value="pending">pending</option>' +
-                '</select>' +
-                '<button onclick="editTask(' + task_list[i].id + ')" type="button" class="btn btn-warning text-white mt-3 px-3">Send</button>' +
-                '<hr>'
+        if (data[i].status == 'doing') {
+            if (data[i].rejected === true) {
+                let rejectedTrue = 'rejected';
+                document.forms['doing'].innerHTML +=
+                '<h4>' + data[i].staff + '</h4>' +
+                '<p>' + data[i].des + '</p>' +
+                '<p>Start date: ' + data[i].startDate + '</p>' +
+                '<p>End date: ' + data[i].endDate + '</p>'+
+                '<p class="text-danger">'+ rejectedTrue +'</p>'+
+                `<select name="select" id="doing" class="form-control mt-1 mb-1">`+
+                `<option value="${data[i].status}">`+ 'Status' +`</option>`+
+                `<option value="pending">pending</option>
+                <option value="done">`+ 'done' +`</option> </select>`+
+                '<button type="button" class="btn btn-warning mt-1 text-white" onclick="edit('+ data[i].id +')">edit</button>' +
+                `<button type="button" class="btn btn-danger ml-3 mt-1" onclick="deleteData(${data[i].id})">delete</button>` +
+                `<br> <hr class="bg-dark"> <br>`
+            }
+            else {
+                let rejectedTrue = '';
+                document.forms['doing'].innerHTML +=
+                '<h4>' + data[i].staff + '</h4>' +
+                '<p>' + data[i].des + '</p>' +
+                '<p>Start date: ' + data[i].startDate + '</p>' +
+                '<p>End date: ' + data[i].endDate + '</p>'+
+                '<p class="text-danger">'+ rejectedTrue +'</p>'+
+                `<select name="select" id="doing" class="form-control mt-1 mb-1">`+
+                `<option value="${data[i].status}">`+ 'Status' +`</option>`+
+                `<option value="pending">pending</option>
+                <option value="done">`+ 'done' +`</option> </select>`+
+                '<button type="button" class="btn btn-warning mt-1 text-white" onclick="edit('+ data[i].id +')">edit</button>' +
+                `<button type="button" class="btn btn-danger ml-3 mt-1" onclick="deleteData(${data[i].id})">delete</button>` +
+                `<br> <hr class="bg-dark"> <br>`
+            }
+        };
+
+        if (data[i].status == 'done') {
+            document.forms['done'].innerHTML +=
+                '<h4>' + data[i].staff + '</h4>' +
+                '<p>' + data[i].des + '</p>' +
+                '<p>Start date: ' + data[i].startDate + '</p>' +
+                '<p>End date: ' + data[i].endDate + '</p>'+
+                '<button type="button" class="btn btn-secondary mt-1 text-white" onclick="toRej('+ data[i].id +')">rejected</button>' +
+                `<br> <hr class="bg-dark"> <br>`
+        };
+
+        if (data[i].status == 'rejected') {
+            document.forms['rejected'].innerHTML +=
+                '<h4>' + data[i].staff + '</h4>' +
+                '<p>' + data[i].des + '</p>' +
+                '<p>Start date: ' + data[i].startDate + '</p>' +
+                '<p>End date: ' + data[i].endDate + '</p>'+
+                `<select name="select" id="rejected" class="form-control mt-1 mb-1">`+
+                `<option value="${data[i].status}">Status</option>`+
+                `<option value="doing">doing</option>
+                <option value="pending">pending</option>
+                <option value="done">done</option> </select>`+
+                '<button type="button" class="btn btn-warning mt-1 text-white" onclick="edit('+ data[i].id +')">edit</button>' +
+                `<br> <hr class="bg-dark"> <br>`
+        };
+    };
+}
+
+writeData()
+
+function addTask() {
+    let area = document.forms['add']['area'].value;
+    let select = document.forms['add']['select'].value;
+    let startDate = document.forms['add']['startDate'].value;
+    let endDate = document.forms['add']['endDate'].value;
+    let status = document.forms['add']['status'].value;
+    if (area !== '' && select !== '' && startDate !== '' && endDate !== '' && status !== '') {
+        let obj = {
+            id:data.length+1,
+            staff:select,
+            startDate:startDate,
+            endDate:endDate,
+            des:area,
+            status:status,
+            rejected: false
+        };
+        data.push(obj);
+        writeData();
+        document.forms['add'].reset()
+    }
+    else {
+        alert('Formani to\'ldiring')
+    }
+    
+}
+
+function deleteData(id) {
+    for (let i = 0; data.length > i; i++) {
+        if (data[i].id === id){
+            data.splice(i,1);
+            writeData()
         }
     }
 }
 
-function addTask() {
-    var task_id = task_list.length + 1;
-    var newList = {
-        id: '', description: '', staff: '', start_date: '', end_date: '', status: ''
-    };
-    var taskStaff = document.forms['myForm']['staff'].value;
-    var taskDesc = document.forms['myForm']['description'].value;
-    var taskStarted = document.forms['myForm']['start_date'].value;
-    var taskEnded = document.forms['myForm']['end_date'].value;
-    var taskStatus = document.forms['myForm']['status'].value;
-
-    if (taskStaff !== '' && taskDesc !== '' && taskStarted !== '' && taskEnded !== '' && taskStatus !== '') {
-        newList = {
-            id: task_id,
-            description: taskDesc,
-            staff: taskStaff,
-            start_date: taskStarted,
-            end_date: taskEnded,
-            status: taskStatus,
-            isRejected: false
-        };
-        task_list.push(newList);
-        getTaskList();
-        document.forms['myForm'].reset();
-    } else {
-        alert('Formani to\'ldiring');
+function edit(id) {
+    for (let i = 0; data.length > i; i++) {
+        if (data[i].id === id) {
+            if (data[i].status == 'pending') {
+                var pend = document.getElementById('pending').value;
+                // var pend = document.forms['pending']['select'].value;
+                data[i].status = pend;
+                writeData()
+                console.log(pend);
+            }
+            else if (data[i].status == 'doing') {
+                var pend = document.getElementById('doing').value;
+                // var pend = document.forms['doing']['select'].value;
+                data[i].status = pend;
+                writeData()
+                console.log(pend);
+            }
+            else if (data[i].status == 'done') {
+                var pend = document.getElementById('done').value;
+                // var pend = document.forms['done']['select'].value;
+                data[i].status = pend;
+                writeData()
+                console.log(pend);
+            }
+            else if (data[i].status == 'rejected') {
+                var pend = document.getElementById('rejected').value;
+                // var pend = document.forms['rejected']['select'].value;
+                data[i].status = pend;
+                data[i].rejected = true;
+                writeData()
+                console.log(pend);
+            }
+        }
     }
-
 }
-
-function getStatus(event) {
-    defStatus = event.target.value;
-}
-
-function editTask(id) {
-    let taskIndex = task_list.findIndex(obj => obj.id === id);
-    if (defStatus !== null) {
-        task_list[taskIndex].status = defStatus;
-        defStatus = null;
-        getTaskList()
-    } else {
-        alert('Statusni tanlang')
+function toRej(id){
+    for (let i = 0; data.length > i; i++) {
+        if (data[i].id === id) {
+            if (data[i].status == 'done') {
+                // var pend = document.getElementById('done').value;
+                // var pend = document.forms['done']['select'].value;
+                data[i].status = 'rejected';
+                writeData()
+            }
+        }
     }
-
 }
 
-function rejectedTask(id) {
+document.getElementById('openTask').onclick = function() {
 
-    let taskIndex = task_list.findIndex(obj => obj.id === id);
-    task_list[taskIndex].status = 'rejected';
-    task_list[taskIndex].isRejected = true;
-    console.log(task_list);
-    defStatus = null;
-    getTaskList()
+    document.querySelector('.first').classList.toggle('active');
 
-
-}
-
-function deleteTask(id) {
-    let taskIndex = task_list.findIndex(obj => obj.id === id);
-     task_list.splice(taskIndex,1);
-     getTaskList();
 }

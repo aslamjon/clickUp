@@ -2,89 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lesson 26</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/privet_bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <section class="section ml-3 mr-3 mt-5">
+            <button type="button" id="openTask" class="btn bg-dark text-white mt-2 mb-3 ml-5 pl-4 pr-4">Add Task</button>
 
-<div class="container-fluid my-5">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-header bg-dark text-center text-white">
-                    <h4>Add task</h4>
-                </div>
-                <div class="card-body">
-                    <form name="myForm">
-                        <textarea placeholder="task description" class="form-control mt-2" name="description" cols="30" rows="3"></textarea>
-                        <select name="staff" class="form-control mt-2">
-                            <option selected disabled>select staff</option>
-                            <option value="Ali">Ali</option>
-                            <option value="vali">Vali</option>
-                            <option value="Kamol">Kamol</option>
-                        </select>
-                        <input type="date" name="start_date" class="form-control mt-2">
-                        <input type="date" name="end_date" class="form-control mt-2">
-
-                        <select name="status" class="form-control mt-2">
-                            <option selected disabled>select status</option>
-                            <option value="pending">pending</option>
-                            <option value="doing">doing</option>
-                        </select>
-
-                        <button onclick="addTask()" type="button" class="btn btn-block bg-dark text-white mt-4">Add task</button>
-                    </form>
+        <div class="first mt-8 pt-3">
+                <div class="card mt-2">
+                    <div class="card-header bg-dark text-white"><h4>Add task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="add">
+                            <textarea name="area" id="" rows="3" placeholder="Task description" class="form-control"></textarea>
+                            <select name="select" id="" class="form-control mt-1 mb-1">
+                                <option value="" disabled selected>Staff</option>
+                                <option value="Aslamjon">Aslamjon</option>
+                                <option value="Begzod">Begzod</option>
+                                <option value="Azizbek">Azizbek</option>
+                                <option value="Doston">Doston</option>
+                                <option value="Ozod">Ozod</option>
+                            </select>
+                            <input type="date" name="startDate" id="" class="form-control">
+                            <input type="date" name="endDate" id="" class="form-control mt-1 mb-1">
+                            <select name="status" id="" class="form-control">
+                                <option value="" disabled selected>Status</option>
+                                <option value="pending">pending</option>
+                                <option value="doing">doing</option>
+                            </select>   
+                            <button type="button" onclick="addTask()" class="btn btn-outline-dark btn-block mt-1">Add task</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-header bg-warning text-center text-white">
-                    <h4>Pending task</h4>
-                </div>
-                <div class="card-body" id="pendingList">
 
+        <article>
+                <div class="card">
+                    <div class="card-header bg-warning text-white"><h4>pending task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="pending"></form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-primary text-white"><h4>Doing task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="doing"></form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-success text-white"><h4>Done task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="done"></form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-info text-white"><h4>Rejected task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="rejected"></form>
+                    </div>
+                </div>
+            </article>
+        <div class="row">
+
+            <!-- <div class="col-md-3 com-sm-12">
+                <div class="card">
+                    <div class="card-header bg-warning text-white"><h4>pending task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="pending"></form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-header bg-info text-center text-white">
-                    <h4>Doing task</h4>
-                </div>
-                <div class="card-body" id="doingList">
-
+            <div class="col-md-3 com-sm-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white"><h4>Doing task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="doing"></form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-header bg-success text-center text-white">
-                    <h4>Done task</h4>
-                </div>
-                <div class="card-body" id="successList">
-
+            <div class="col-md-3 com-sm-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white"><h4>Done task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="done"></form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-header bg-secondary text-center text-white">
-                    <h4>Rejected task</h4>
+            <div class="col-md-3 com-sm-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white"><h4>Rejected task</h4></div>
+                    <div class="card-body ml-1 mr-1">
+                        <form name="rejected"></form>
+                    </div>
                 </div>
-                <div class="card-body" id="rejectedList">
-
-                </div>
-            </div>
+            </div> -->
         </div>
-    </div>
-</div>
+    </section>
+    
 
-
-<script src="js/jquery.js"></script>
-<script src="js/src/popover.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
